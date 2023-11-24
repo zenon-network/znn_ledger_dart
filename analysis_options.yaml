@@ -1,0 +1,11 @@
+include: package:lints/core.yaml
+
+analyzer:
+  errors:
+    invalid_annotation_target: ignore
+  exclude:
+    - lib/**.g.dart
+    - lib/**.gen.dart
+    - lib/**.gr.dart
+    - lib/**.freezed.dart
+    - lib/**.config.dart
