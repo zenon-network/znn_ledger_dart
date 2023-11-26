@@ -45,13 +45,14 @@ void main() async {
     if (walletList.isNotEmpty) {
         try {
             // Use first wallet available
-            var wallet = await manager.getWallet(walletList[0], null);
+            var wallet = await manager.getWallet(
+              walletList[0], LedgerWalletOptions(confirmAddressByDefault: false));
 
             // Get primary wallet account
             var account = await wallet.getAccount(0) as LedgerWalletAccount;
             
-            // Get address
-            var address = await account.getAddress();
+            // Get address and confirm with ledger
+            var address = await account.getAddress(true);
             ...
         } on LedgerError catch (e) {
             print('Ledger error code: ${e}');

@@ -142,7 +142,7 @@ class LedgerTransport implements Finalizable {
   }
 
   Future<List<int>> getPublicKey(int accountIndex,
-      {bool verify = false}) async {
+      {bool confirm = false}) async {
     final bip32PathBytes = Uint8List.fromList([
       0x03, // PATH LENGTH
       ...(44 | (1 << 31)).toBytes(), // 44'
@@ -158,7 +158,7 @@ class LedgerTransport implements Finalizable {
             _ptr,
             _cla, // CLA
             _insGetPk, // INS
-            verify ? 0x01 : 0x00, // P1
+            confirm ? 0x01 : 0x00, // P1
             0x00, // P2
             jsonEncode(bip32PathBytes).toNativeUtf8().cast<Char>(),
           ),

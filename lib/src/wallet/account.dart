@@ -14,14 +14,22 @@ class LedgerWalletAccount implements WalletAccount {
         _accountIndex = accountIndex;
 
   @override
-  Future<Address> getAddress([bool display = false]) async {
-    _address ??= Address.fromPublicKey(await getPublicKey(display));
+  Future<Address> getAddress([bool? confirm]) async {
+    // Do not cache when confirmation is explicit
+    if (confirm != null && confirm) {
+      _address = Address.fromPublicKey(await getPublicKey(confirm));
+    }
+    _address ??= Address.fromPublicKey(await getPublicKey(confirm));
     return _address!;
   }
 
   @override
-  Future<List<int>> getPublicKey([bool display = false]) async {
-    publicKey ??= await _ledgerWallet.getPublicKey(_accountIndex, display);
+  Future<List<int>> getPublicKey([bool? confirm]) async {
+    // Do not cache when confirmation is explicit
+    if (confirm != null && confirm) {
+      publicKey = await _ledgerWallet.getPublicKey(_accountIndex, confirm);
+    }
+    publicKey ??= await _ledgerWallet.getPublicKey(_accountIndex, confirm);
     return publicKey!;
   }
 
