@@ -37,20 +37,20 @@ mixin _$LedgerError {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ConnectionError value) connectionError,
-    required TResult Function(_ResponseError value) responseError,
+    required TResult Function(ConnectionError value) connectionError,
+    required TResult Function(ResponseError value) responseError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ConnectionError value)? connectionError,
-    TResult? Function(_ResponseError value)? responseError,
+    TResult? Function(ConnectionError value)? connectionError,
+    TResult? Function(ResponseError value)? responseError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ConnectionError value)? connectionError,
-    TResult Function(_ResponseError value)? responseError,
+    TResult Function(ConnectionError value)? connectionError,
+    TResult Function(ResponseError value)? responseError,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -107,7 +107,7 @@ class __$$ConnectionErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ConnectionErrorImpl implements _ConnectionError {
+class _$ConnectionErrorImpl implements ConnectionError {
   const _$ConnectionErrorImpl({required this.origMessage});
 
   @override
@@ -171,8 +171,8 @@ class _$ConnectionErrorImpl implements _ConnectionError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ConnectionError value) connectionError,
-    required TResult Function(_ResponseError value) responseError,
+    required TResult Function(ConnectionError value) connectionError,
+    required TResult Function(ResponseError value) responseError,
   }) {
     return connectionError(this);
   }
@@ -180,8 +180,8 @@ class _$ConnectionErrorImpl implements _ConnectionError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ConnectionError value)? connectionError,
-    TResult? Function(_ResponseError value)? responseError,
+    TResult? Function(ConnectionError value)? connectionError,
+    TResult? Function(ResponseError value)? responseError,
   }) {
     return connectionError?.call(this);
   }
@@ -189,8 +189,8 @@ class _$ConnectionErrorImpl implements _ConnectionError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ConnectionError value)? connectionError,
-    TResult Function(_ResponseError value)? responseError,
+    TResult Function(ConnectionError value)? connectionError,
+    TResult Function(ResponseError value)? responseError,
     required TResult orElse(),
   }) {
     if (connectionError != null) {
@@ -200,8 +200,8 @@ class _$ConnectionErrorImpl implements _ConnectionError {
   }
 }
 
-abstract class _ConnectionError implements LedgerError {
-  const factory _ConnectionError({required final String origMessage}) =
+abstract class ConnectionError implements LedgerError {
+  const factory ConnectionError({required final String origMessage}) =
       _$ConnectionErrorImpl;
 
   String get origMessage;
@@ -243,7 +243,7 @@ class __$$ResponseErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ResponseErrorImpl implements _ResponseError {
+class _$ResponseErrorImpl implements ResponseError {
   const _$ResponseErrorImpl({required this.statusWord});
 
   @override
@@ -306,8 +306,8 @@ class _$ResponseErrorImpl implements _ResponseError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ConnectionError value) connectionError,
-    required TResult Function(_ResponseError value) responseError,
+    required TResult Function(ConnectionError value) connectionError,
+    required TResult Function(ResponseError value) responseError,
   }) {
     return responseError(this);
   }
@@ -315,8 +315,8 @@ class _$ResponseErrorImpl implements _ResponseError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ConnectionError value)? connectionError,
-    TResult? Function(_ResponseError value)? responseError,
+    TResult? Function(ConnectionError value)? connectionError,
+    TResult? Function(ResponseError value)? responseError,
   }) {
     return responseError?.call(this);
   }
@@ -324,8 +324,8 @@ class _$ResponseErrorImpl implements _ResponseError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ConnectionError value)? connectionError,
-    TResult Function(_ResponseError value)? responseError,
+    TResult Function(ConnectionError value)? connectionError,
+    TResult Function(ResponseError value)? responseError,
     required TResult orElse(),
   }) {
     if (responseError != null) {
@@ -335,8 +335,8 @@ class _$ResponseErrorImpl implements _ResponseError {
   }
 }
 
-abstract class _ResponseError implements LedgerError {
-  const factory _ResponseError({required final StatusWord statusWord}) =
+abstract class ResponseError implements LedgerError {
+  const factory ResponseError({required final StatusWord statusWord}) =
       _$ResponseErrorImpl;
 
   StatusWord get statusWord;

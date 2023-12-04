@@ -7,9 +7,9 @@ part 'ledger_error.freezed.dart';
 class LedgerError with _$LedgerError {
   const factory LedgerError.connectionError({
     required String origMessage,
-  }) = _ConnectionError;
+  }) = ConnectionError;
 
   const factory LedgerError.responseError({
     required StatusWord statusWord,
-  }) = _ResponseError;
+  }) = ResponseError;
 }

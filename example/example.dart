@@ -43,8 +43,10 @@ void main() async {
 
         // Send tx
         await znnClient.send(block);
-      } on LedgerError catch (e) {
-        print('Ledger error code: ${e}');
+      } on ConnectionError catch (e) {
+        print('Ledger connection error: ${e.origMessage}');
+      } on ResponseError catch (e) {
+        print('Ledger response error: ${e.statusWord}');
       }
     } else {
       print('No wallets found');
