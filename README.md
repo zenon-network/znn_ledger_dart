@@ -54,8 +54,10 @@ void main() async {
             // Get address and confirm with ledger
             var address = await account.getAddress(true);
             ...
-        } on LedgerError catch (e) {
-            print('Ledger error code: ${e}');
+        } on ConnectionError catch (e) {
+            print('Ledger connection error: ${e.origMessage}');
+        } on ResponseError catch (e) {
+            print('Ledger response error: ${e.statusWord}');
         }
     } else {
         print('No wallets found');
