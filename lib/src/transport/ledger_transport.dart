@@ -13,9 +13,6 @@ import 'package:znn_ledger_dart/src/transport/ledger_response.dart';
 import 'package:znn_ledger_dart/src/transport/status_word.dart';
 import 'package:znn_ledger_dart/src/transport/version.dart';
 
-final _nativeFinalizer = NativeFinalizer(
-    LedgerFfi.instance.bindings.addresses.ll_ledger_transport_free_ptr);
-
 class LedgerTransport implements Finalizable {
   static const _cla = 0xe0;
   static const _insGetVer =
@@ -26,27 +23,46 @@ class LedgerTransport implements Finalizable {
       0x06; // Sign transaction given BIP32 path and raw transaction
   static const _chunkSize = 0xFF;
 
-  late Pointer<Void> _ptr;
+  static final _nativeFinalizer = NativeFinalizer(
+      LedgerFfi.instance.bindings.addresses.ll_ledger_transport_free_ptr);
 
-  @override
-  LedgerTransport(
-    String path,
-  ) {
+  Pointer<Void> _nativeTransport;
+
+  bool _closed = false;
+
+  LedgerTransport._(this._nativeTransport);
+
+  factory LedgerTransport.open(String path) {
     final result = executeSync(
       () => LedgerFfi.instance.bindings
           .ll_create_ledger_transport(path.toNativeUtf8().cast<Char>()),
     );
+    final nativeTransport = toPtrFromAddress(result as String);
+    final transport = LedgerTransport._(nativeTransport);
+    _nativeFinalizer.attach(transport, nativeTransport, detach: transport);
+    return transport;
+  }
 
-    _ptr = toPtrFromAddress(result as String);
+  void close() {
+    if (_closed) {
+      return;
+    }
+    _closed = true;
+    _nativeFinalizer.detach(this);
+    LedgerFfi.instance.bindings.ll_ledger_transport_free_ptr(_nativeTransport);
+  }
 
-    _nativeFinalizer.attach(this, _ptr);
+  void _assertOpen() {
+    if (_closed) {
+      throw StateError('The ledger transport has been closed.');
+    }
   }
 
   static Future<LedgerTransport> create({
     required String path,
     required String appName,
   }) async {
-    final instance = LedgerTransport(path);
+    final instance = LedgerTransport.open(path);
     try {
       final name = await instance.getAppName();
       if (name != appName) {
@@ -83,7 +99,7 @@ class LedgerTransport implements Finalizable {
         final result = await executeAsync(
           (port) => LedgerFfi.instance.bindings.ll_ledger_exchange(
             port,
-            _ptr,
+            _nativeTransport,
             _cla, // CLA
             _insGetVer, // INS
             0x00, // P1
@@ -99,12 +115,15 @@ class LedgerTransport implements Finalizable {
           throw LedgerError.responseError(statusWord: response.statusWord);
         }
 
-        final major = response.data[0];
-        final minor = response.data[1];
-        final patch = response.data[2];
+        final version = response.data;
 
-        return Version(
-            versionMajor: major, versionMinor: minor, versionPatch: patch);
+        return version.isNotEmpty && version[0] == 3
+            ? Version(
+                versionMajor: version[0],
+                versionMinor: version[1],
+                versionPatch: version[2])
+            : throw LedgerError.responseError(
+                statusWord: StatusWord.wrongResponseLength);
       },
     );
   }
@@ -117,7 +136,7 @@ class LedgerTransport implements Finalizable {
         final result = await executeAsync(
           (port) => LedgerFfi.instance.bindings.ll_ledger_exchange(
             port,
-            _ptr,
+            _nativeTransport,
             _cla, // CLA
             _insGetAn, // INS
             0x00, // P1
@@ -134,9 +153,8 @@ class LedgerTransport implements Finalizable {
         }
 
         final nameBytes = response.data.toList();
-        final name = String.fromCharCodes(nameBytes);
 
-        return name;
+        return String.fromCharCodes(nameBytes);
       },
     );
   }
@@ -155,7 +173,7 @@ class LedgerTransport implements Finalizable {
         final result = await executeAsync(
           (port) => LedgerFfi.instance.bindings.ll_ledger_exchange(
             port,
-            _ptr,
+            _nativeTransport,
             _cla, // CLA
             _insGetPk, // INS
             confirm ? 0x01 : 0x00, // P1
@@ -173,9 +191,10 @@ class LedgerTransport implements Finalizable {
 
         final key = response.data;
 
-        return key.isNotEmpty
+        return key.isNotEmpty && key[0] == 32
             ? key.skip(1).take(key[0]).toList()
-            : List<int>.from([]);
+            : throw LedgerError.responseError(
+                statusWord: StatusWord.wrongResponseLength);
       },
     );
   }
@@ -200,7 +219,7 @@ class LedgerTransport implements Finalizable {
         await executeAsync(
           (port) => LedgerFfi.instance.bindings.ll_ledger_exchange(
             port,
-            _ptr,
+            _nativeTransport,
             _cla, // CLA
             _insSignTx, // INS
             index, // P1
@@ -219,7 +238,7 @@ class LedgerTransport implements Finalizable {
           await executeAsync(
             (port) => LedgerFfi.instance.bindings.ll_ledger_exchange(
               port,
-              _ptr,
+              _nativeTransport,
               _cla, // CLA
               _insSignTx, // INS
               index, // P1
@@ -240,7 +259,7 @@ class LedgerTransport implements Finalizable {
         final result = await executeAsync(
           (port) => LedgerFfi.instance.bindings.ll_ledger_exchange(
             port,
-            _ptr,
+            _nativeTransport,
             _cla, // CLA
             _insSignTx, // INS
             index, // P1
@@ -260,12 +279,14 @@ class LedgerTransport implements Finalizable {
 
         return signature.isNotEmpty
             ? signature.skip(1).take(signature[0]).toList()
-            : List<int>.from([]);
+            : throw LedgerError.responseError(
+                statusWord: StatusWord.wrongResponseLength);
       },
     );
   }
 
   Future<T> _executeLedgerQuery<T>(Future<T> Function() query) async {
+    _assertOpen();
     try {
       return await query();
     } on LedgerError {
