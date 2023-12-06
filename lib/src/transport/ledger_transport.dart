@@ -71,8 +71,10 @@ class LedgerTransport implements Finalizable {
       }
       return instance;
     } on LedgerError {
+      instance.close();
       rethrow;
     } catch (err) {
+      instance.close();
       throw LedgerError.connectionError(origMessage: err.toString());
     }
   }
