@@ -14,6 +14,10 @@ class LedgerWallet implements Wallet {
     return LedgerWallet(transport: ledgerTransport, options: options);
   }
 
+  Future<void> disconnect() async {
+    _transport.close();
+  }
+
   final LedgerTransport _transport;
   final LedgerWalletOptions _options;
 

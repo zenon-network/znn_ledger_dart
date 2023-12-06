@@ -10,6 +10,8 @@ class LedgerWalletOptions implements WalletOptions {
 }
 
 class LedgerWalletManager implements WalletManager {
+  final _wallets = new Map<String, LedgerWallet>();
+
   final LedgerWalletOptions defaultWalletOptions =
       LedgerWalletOptions(confirmAddressByDefault: false);
 
@@ -33,7 +35,14 @@ class LedgerWalletManager implements WalletManager {
       throw Exception(
           "Unsupported wallet options ${walletOptions.runtimeType}.");
     }
-    return LedgerWallet.connect(walletDefinition.walletId, walletOptions);
+    
+    if (_wallets.containsKey(walletDefinition.walletId)) {
+      await _wallets.remove(walletDefinition.walletId)!.disconnect();
+    }
+    final wallet =
+        await LedgerWallet.connect(walletDefinition.walletId, walletOptions);
+    _wallets[walletDefinition.walletId] = wallet;
+    return wallet;
   }
 
   @override
