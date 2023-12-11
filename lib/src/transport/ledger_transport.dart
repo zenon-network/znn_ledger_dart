@@ -279,7 +279,7 @@ class LedgerTransport implements Finalizable {
         }
         final signature = response.data;
 
-        return signature.isNotEmpty
+        return signature.isNotEmpty && signature[0] == 64
             ? signature.skip(1).take(signature[0]).toList()
             : throw LedgerError.responseError(
                 statusWord: StatusWord.wrongResponseLength);
