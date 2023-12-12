@@ -16,8 +16,8 @@ dependencies:
   json_annotation: ^4.8.1
   znn_sdk_dart:
     git:
-      url: https://github.com/hypercore-one/znn_sdk_dart.git
-      ref: feature/wallet
+      url: https://github.com/zenon-network/znn_sdk_dart.git
+      ref: 5967f385f6d64dcf61068485674a9e079534e68b
 
 dev_dependencies:
   build_runner: ^2.4.6
