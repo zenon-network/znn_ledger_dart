@@ -42,7 +42,9 @@ class LedgerFfi {
     possiblePaths
         .add(path.join(path.joinAll(executablePathListParts), 'Resources'));
     possiblePaths.add(path.join(path.joinAll(currentPathListParts), insideSdk));
-
+    possiblePaths
+        .add(path.join(path.joinAll(path.split(Directory.current.path)), 'Resources'));
+      
     var libraryPath = '';
     var found = false;
 
