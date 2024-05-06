@@ -1,6 +1,6 @@
 # Ledger Wallet for Zenon Dart SDK
 
-The Ledger Wallet offers a cross platform client implementation for the [Zenon Ledger App](https://github.com/HyperCore-One/ledger-app-zenon). Supported platforms are Linux, OSX and Windows.
+The Ledger Wallet offers a cross platform client implementation for the [Zenon Ledger App](https://github.com/HyperCore-One/ledger-app-zenon). Supported platforms are Linux, macOS and Windows.
 
 ## Setup
 

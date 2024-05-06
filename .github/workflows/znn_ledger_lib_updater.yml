@@ -25,7 +25,7 @@ jobs:
           latest: true
       - name: Unzip libledger_ffi native library to blobs directory
         run: |
-          unzip -j -o libledger_ffi-darwin-arch64.zip -d lib/src/ledger/blobs/
+          unzip -j -o libledger_ffi-darwin-universal.zip -d lib/src/ledger/blobs/
           unzip -j -o libledger_ffi-linux-amd64.zip -d lib/src/ledger/blobs/
           unzip -j -o libledger_ffi-windows-amd64.zip -d lib/src/ledger/blobs/
       - name: Check if there are changes
