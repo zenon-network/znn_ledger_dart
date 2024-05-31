@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:znn_sdk_dart/znn_sdk_dart.dart';
+import 'package:znn_sdk_dart/src/utils/path.dart';
 
 import 'ledger_ffi_bindings.dart';
 
@@ -23,7 +24,7 @@ class LedgerFfi {
 
   LedgerFfiBindings get bindings {
     if (_bindings != null) {
-      return _bindings!;
+      return _bindings;
     } else {
       throw Exception("Library isn't loaded");
     }
