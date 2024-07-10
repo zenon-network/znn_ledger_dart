@@ -17,11 +17,11 @@ jobs:
           sudo apt upgrade -y
           sudo apt install -y unzip
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download libledger_ffi
-        uses: robinraju/release-downloader@v1.6
+        uses: robinraju/release-downloader@v1
         with:
-          repository: "hypercore-one/ledger_ffi_rs"
+          repository: "zenon-network/ledger_ffi_rs"
           latest: true
       - name: Unzip libledger_ffi native library to blobs directory
         run: |
