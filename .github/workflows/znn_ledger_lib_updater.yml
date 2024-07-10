@@ -23,6 +23,7 @@ jobs:
         with:
           repository: "zenon-network/ledger_ffi_rs"
           latest: true
+          zipBall: true
       - name: Unzip libledger_ffi native library to blobs directory
         run: |
           unzip -j -o libledger_ffi-darwin-universal.zip -d lib/src/ledger/blobs/
