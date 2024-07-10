@@ -17,12 +17,13 @@ jobs:
           sudo apt upgrade -y
           sudo apt install -y unzip
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download libledger_ffi
-        uses: robinraju/release-downloader@v1.6
+        uses: robinraju/release-downloader@v1
         with:
-          repository: "hypercore-one/ledger_ffi_rs"
+          repository: "zenon-network/ledger_ffi_rs"
           latest: true
+          fileName: '*.zip'
       - name: Unzip libledger_ffi native library to blobs directory
         run: |
           unzip -j -o libledger_ffi-darwin-universal.zip -d lib/src/ledger/blobs/
@@ -44,8 +45,6 @@ jobs:
         run: |
           git config user.name  "Github Actions"
           git config user.email "GH-actions-ci@github.com"
-          git fetch
-          git pull
           git add -f lib/src/ledger/blobs/*
           git commit -m "Updated native libraries"
-          git push origin ${GITHUB_REF##*/}
+          git push
