@@ -45,8 +45,6 @@ jobs:
         run: |
           git config user.name  "Github Actions"
           git config user.email "GH-actions-ci@github.com"
-          git fetch
-          git pull
           git add -f lib/src/ledger/blobs/*
           git commit -m "Updated native libraries"
-          git push origin ${GITHUB_REF##*/}
+          git push
