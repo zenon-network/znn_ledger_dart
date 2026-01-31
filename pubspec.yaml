@@ -17,7 +17,7 @@ dependencies:
   znn_sdk_dart:
     git:
       url: https://github.com/zenon-network/znn_sdk_dart.git
-      ref: v1.0.0
+      ref: chore/upgrade-packages
 
 dev_dependencies:
   freezed: ^3.2.4
