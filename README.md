@@ -11,7 +11,7 @@ dependencies:
   znn_ledger_dart: ^latest_version
 ```
 
-> Notice: `znn_ledger_dart` requires Dart version `>=2.17.0`
+> Notice: `znn_ledger_dart` requires Dart version `>=3.7.0`
 
 You can also use a specific GitHub tag or branch:
 
